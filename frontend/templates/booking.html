@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Vehicle - Vehicle Rental System{% endblock %}
+
+{% block content %}
+  <h2>Book a Vehicle</h2>
+  <form id="booking-form">
+    <input type="number" id="vehicle_id" placeholder="Vehicle ID" required readonly />
+    <input type="date" id="rent_date" required />
+    <input type="date" id="return_date" required />
+    <button type="submit">Book Vehicle</button>
+  </form>
+  <div id="booking-result"></div>
+
+  <script>
+    // Autofill vehicle ID from URL parameter (e.g., ?vehicle_id=3)
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const vehicleId = urlParams.get('vehicle_id');
+      if (vehicleId) {
+        document.getElementById("vehicle_id").value = vehicleId;
+      }
+    }
+  </script>
+{% endblock %}

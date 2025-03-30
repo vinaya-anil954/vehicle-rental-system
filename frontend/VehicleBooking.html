@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #5a4594;
+            text-align: center;
+            color: white;
+        }
+        .navbar {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 0 15px;
+        }
+        .navbar a:hover {
+            color: #3d10e0;
+        }
+        .booking-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            color: black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .booking-container h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .vehicle-info {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .vehicle-info img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .book-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #ff5733;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .book-btn:hover {
+            background: #e04e2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Vehicle Rental</h2>
+        <div>
+            <a href="homeJS.html">Home</a>
+            <a href="VehicleBrowseJS.html">Vehicles</a>
+            <a href="MyBooking.html">MyBookings</a>
+            <a href="LoginPage.html" >Contact</a>
+        </div>
+    </div>
+    
+    <div class="booking-container">
+        <h2>Book Your Vehicle</h2>
+        <div class="vehicle-info">
+            <img id="vehicleImage" src="" alt="Vehicle Image">
+            <h3 id="vehicleName"></h3>
+            <p id="vehiclePrice"></p>
+        </div>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="pickupDate">Pickup Date</label>
+                <input type="date" id="pickupDate" required>
+            </div>
+            <div class="form-group">
+                <label for="returnDate">Return Date</label>
+                <input type="date" id="returnDate" required>
+            </div>
+            <div class="form-group">
+                <label for="pickupLocation">Pickup Location</label>
+                <input type="text" id="pickupLocation" placeholder="Enter pickup location" required>
+            </div>
+            <button type="submit" class="book-btn">Confirm Booking</button>
+        </form>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            document.getElementById("vehicleImage").src = urlParams.get("image");
+            document.getElementById("vehicleName").textContent = urlParams.get("name");
+            document.getElementById("vehiclePrice").textContent = "Price: " + urlParams.get("price");
+        });
+
+        document.getElementById("bookingForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Your booking has been confirmed!");
+        });
+    </script>
+</body>
+</html>

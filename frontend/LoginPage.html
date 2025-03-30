@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Rental Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #5a4594;
+            margin: 0;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .login-card {
+            background: rgb(184, 173, 216);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .login-card h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+        .login-btn {
+            background-color: #754fa1;
+        }
+        .login-btn:hover {
+            background-color: #8332e0;
+        }
+        .admin-btn {
+            background-color: #6873d3;
+        }
+        .admin-btn:hover {
+            background-color: #3747da;
+        }
+        .signup-text {
+            margin-top: 1rem;
+        }
+        .signup-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Vehicle Rental Login</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn login-btn">Login</button>
+            </form>
+
+            <button class="btn admin-btn" onclick="adminLogin()">Admin Login</button>
+
+            <p class="signup-text">Don't have an account? <a href="Signup page.html">Sign Up</a></p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            
+            if (email === "admin@example.com" && password === "password123") {
+                alert("Login successful!");
+                window.location.href = "home.html";
+            } else {
+                alert("Invalid email or password. Please try again.");
+            }
+        });
+
+        function adminLogin() {
+            window.location.href = "adminLogin.html";
+        }
+    </script>
+</body>
+</html>

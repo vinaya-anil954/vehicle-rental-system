@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Rental Signup</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #5a4594;
+            margin: 0;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+
+        .signup-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .signup-card {
+            background: rgb(184, 173, 216);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .signup-card h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .signup-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #754fa1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .signup-btn:hover {
+            background-color: #4212c5;
+        }
+        .login-text {
+            margin-top: 1rem;
+        }
+        .login-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-card">
+            <h2>Vehicle Rental Signup</h2>
+            <form id="signupForm">
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="signup-btn">Sign Up</button>
+            </form>
+            <p class="login-text">Already have an account? <a href="Login page.html">Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form from refreshing page
+            
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            
+            if (name.trim() === "" || email.trim() === "" || password.trim() === "") {
+                alert("All fields are required!");
+                return;
+            }
+
+            // Simulating user registration (In real applications, send data to backend)
+            alert("Signup successful! You can now log in.");
+            window.location.href = "Login page.html"; // Redirect to login page
+        });
+    </script>
+</body>
+</html>

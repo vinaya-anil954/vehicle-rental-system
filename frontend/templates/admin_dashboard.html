@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+    <h2>Admin Dashboard</h2>
+    
+    <h3>Add Vehicle</h3>
+    <form method="POST" action="{{ url_for('add_vehicle') }}">
+        <input type="text" name="model" placeholder="Model" required>
+        <input type="text" name="brand" placeholder="Brand" required>
+        <input type="number" name="price" placeholder="Price" required>
+        <button type="submit">Add Vehicle</button>
+    </form>
+
+    <h3>All Vehicles</h3>
+    <ul>
+        {% for vehicle in vehicles %}
+            <li>
+                {{ vehicle[1] }} ({{ vehicle[2] }}) - ${{ vehicle[3] }} 
+                <a href="{{ url_for('delete_vehicle', vehicle_id=vehicle[0]) }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h3>All Bookings</h3>
+    <ul>
+        {% for booking in bookings %}
+            <li>
+                Booking ID: {{ booking[0] }} | User: {{ booking[1] }} | Vehicle: {{ booking[2] }} | Status: {{ booking[3] }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <br>
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}

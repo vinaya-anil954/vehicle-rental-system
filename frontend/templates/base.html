@@ -1,31 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>{% block title %}Vehicle Rental System{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <meta charset="UTF-8">
+    <title>{% block title %}Vehicle Rental System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><a href="{{ url_for('home_page') }}">Home</a></li>
-      {% if session.user_id %}
-        <li><a href="{{ url_for('vehicles_page') }}">Vehicles</a></li>
-        <li><a href="{{ url_for('booking_page') }}">Book a Vehicle</a></li>
-        <li><a href="{{ url_for('mybookings_page') }}">My Bookings</a></li>
-        <li><a href="{{ url_for('logout_page') }}">Logout</a></li>
-      {% else %}
-        <li><a href="{{ url_for('login_page') }}">Login</a></li>
-        <li><a href="{{ url_for('register_page') }}">Register</a></li>
-      {% endif %}
-    </ul>
-  </nav>
-
-  <div class="container">
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('signup') }}">Signup</a></li>
+            <li><a href="{{ url_for('admin_login') }}">Admin Login</a></li>
+        </ul>
+    </nav>
+    
     {% block content %}
     {% endblock %}
-  </div>
-
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

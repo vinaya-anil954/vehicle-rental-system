@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}My Bookings{% endblock %}
+{% block content %}
+    <h2>My Bookings</h2>
+    <ul>
+        {% for booking in bookings %}
+            <li>
+                {{ booking[1] }} - ${{ booking[2] }} - Status: {{ booking[3] }}
+                <a href="{{ url_for('cancel_booking', booking_id=booking[0]) }}">Cancel</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="{{ url_for('user_dashboard') }}">Back</a> |
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}

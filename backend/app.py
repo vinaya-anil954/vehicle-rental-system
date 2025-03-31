@@ -1,198 +1,199 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-from db_config import connect_db
-from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
-from dotenv import load_dotenv
+from flask import Flask, render_template, request, redirect, session, url_for
+from db_config import get_db_connection
+import hashlib
 import os
 
-# Load environment variables from .env file
-load_dotenv()
+# Configure Flask to use templates and static files from the frontend folder
+app = Flask(
+    __name__,
+    template_folder=os.path.abspath('../frontend/templates'),
+    static_folder=os.path.abspath('../frontend/static')
+)
+app.secret_key = 'your_secret_key'  # Change this to a strong secret key
 
-# Initialize Flask app
-app = Flask(__name__, template_folder="../frontend/templates", static_folder="../frontend/static")
-app.secret_key = 'your_secret_key_here'  # Replace with a strong secret key
+# Helper function to hash passwords using SHA256
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-# ---------------------------
-# Page Routes (Render Templates)
-# ---------------------------
+# Home route: redirect based on login status
 @app.route('/')
-def home_page():
-    return render_template("home.html")
+def home():
+    if 'user_id' in session:
+        return redirect(url_for('user_dashboard'))
+    elif 'admin_id' in session:
+        return redirect(url_for('admin_dashboard'))
+    return render_template('home.html')
 
-@app.route('/login')
-def login_page():
-    return render_template("login.html")
+# User Signup
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        name     = request.form['name']
+        email    = request.form['email']
+        password = hash_password(request.form['password'])
+        conn     = get_db_connection()
+        cursor   = conn.cursor()
+        cursor.execute("INSERT INTO users (name, email, password) VALUES (%s, %s, %s)",
+                       (name, email, password))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('login'))
+    return render_template('signup.html')
 
-@app.route('/register')
-def register_page():
-    return render_template("register.html")
-
-@app.route('/vehicles')
-def vehicles_page():
-    return render_template("vehicles.html")
-
-@app.route('/booking')
-def booking_page():
-    return render_template("booking.html")
-
-@app.route('/mybookings')
-def mybookings_page():
-    return render_template("mybookings.html")
-
-@app.route('/logout')
-def logout_page():
-    session.clear()
-    return redirect(url_for('home_page'))
-
-# ---------------------------
-# API Endpoints (JSON Responses)
-# ---------------------------
-@app.route('/api/vehicles', methods=['GET'])
-def get_vehicles():
-    db = connect_db()
-    if db is None:
-        return jsonify({"error": "Database connection failed"}), 500
-    cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM vehicles WHERE availability = TRUE")
-    vehicles = cursor.fetchall()
-    db.close()
-    return jsonify(vehicles)
-
-@app.route('/api/bookings', methods=['POST'])
-def create_booking():
-    if 'user_id' not in session:
-        return jsonify({"error": "User must be logged in to create a booking"}), 401
-
-    data = request.get_json()
-    user_id = session['user_id']  # use logged-in user's id
-    vehicle_id = data.get('vehicle_id')
-    rent_date = data.get('rent_date')
-    return_date = data.get('return_date')
-
-    if not all([vehicle_id, rent_date, return_date]):
-        return jsonify({"error": "Missing required fields"}), 400
-
-    db = connect_db()
-    if db is None:
-        return jsonify({"error": "Database connection failed"}), 500
-    cursor = db.cursor(dictionary=True)
-    
-    # Get vehicle price per day
-    cursor.execute("SELECT price_per_day FROM vehicles WHERE id = %s", (vehicle_id,))
-    vehicle = cursor.fetchone()
-    if not vehicle:
-        db.close()
-        return jsonify({"error": "Vehicle not found"}), 404
-
-    price_per_day = vehicle['price_per_day']
-
-    try:
-        rent_dt = datetime.strptime(rent_date, "%Y-%m-%d")
-        return_dt = datetime.strptime(return_date, "%Y-%m-%d")
-    except ValueError:
-        db.close()
-        return jsonify({"error": "Date format should be YYYY-MM-DD"}), 400
-
-    delta = (return_dt - rent_dt).days
-    if delta < 1:
-        db.close()
-        return jsonify({"error": "Return date must be after rent date"}), 400
-
-    total_price = price_per_day * delta
-
-    insert_query = """
-        INSERT INTO bookings (user_id, vehicle_id, rent_date, return_date, total_price, status)
-        VALUES (%s, %s, %s, %s, %s, 'Pending')
-    """
-    cursor.execute(insert_query, (user_id, vehicle_id, rent_date, return_date, total_price))
-    db.commit()
-    db.close()
-
-    return jsonify({"message": "Booking created", "total_price": total_price}), 201
-
-@app.route('/api/mybookings', methods=['GET'])
-def my_bookings():
-    if 'user_id' not in session:
-        return jsonify({"error": "User must be logged in to view bookings"}), 401
-
-    user_id = session['user_id']
-    db = connect_db()
-    if db is None:
-        return jsonify({"error": "Database connection failed"}), 500
-    cursor = db.cursor(dictionary=True)
-    query = """
-        SELECT b.id AS booking_id, b.rent_date, b.return_date, b.total_price, b.status, 
-               v.model, v.brand, v.price_per_day
-        FROM bookings b
-        JOIN vehicles v ON b.vehicle_id = v.id
-        WHERE b.user_id = %s
-        ORDER BY b.rent_date DESC
-    """
-    cursor.execute(query, (user_id,))
-    bookings = cursor.fetchall()
-    db.close()
-    return jsonify(bookings)
-
-@app.route('/api/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    name = data.get('name')
-    email = data.get('email')
-    phone = data.get('phone')
-    password = data.get('password')
-    
-    if not name or not email or not password:
-        return jsonify({"error": "Name, email, and password are required"}), 400
-
-    hashed_password = generate_password_hash(password)
-
-    db = connect_db()
-    if db is None:
-        return jsonify({"error": "Database connection failed"}), 500
-    cursor = db.cursor(dictionary=True)
-    try:
-        cursor.execute(
-            "INSERT INTO users (name, email, phone, password) VALUES (%s, %s, %s, %s)", 
-            (name, email, phone, hashed_password)
-        )
-        db.commit()
-    except Exception as e:
-        db.close()
-        if "Duplicate entry" in str(e):
-            return jsonify({"error": "This email is already registered. Please use a different email."}), 400
-        return jsonify({"error": str(e)}), 500
-    db.close()
-    return jsonify({"message": "User registered successfully"}), 201
-
-@app.route('/api/login', methods=['POST'])
+# User Login
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
-    
-    if not email or not password:
-        return jsonify({"error": "Email and password are required"}), 400
+    if request.method == 'POST':
+        email    = request.form['email']
+        password = hash_password(request.form['password'])
+        conn     = get_db_connection()
+        cursor   = conn.cursor()
+        cursor.execute("SELECT id FROM users WHERE email=%s AND password=%s", (email, password))
+        user = cursor.fetchone()
+        conn.close()
+        if user:
+            session['user_id'] = user[0]
+            return redirect(url_for('user_dashboard'))
+    return render_template('login.html')
 
-    db = connect_db()
-    if db is None:
-        return jsonify({"error": "Database connection failed"}), 500
-    cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-    user = cursor.fetchone()
-    db.close()
-    
-    if not user or not check_password_hash(user['password'], password):
-        return jsonify({"error": "Invalid email or password"}), 401
-    
-    session['user_id'] = user['id']
-    session['user_name'] = user['name']
-    
-    return jsonify({"message": "Login successful. Welcome, " + user['name'], "user": user}), 200
+# Admin Login
+@app.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']  # using plain text for admin login
+        print("Admin login attempt:", email, password)  # Debug statement
 
-@app.route('/api/logout', methods=['POST'])
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM admins WHERE email=%s AND password=%s", (email, password))
+        admin = cursor.fetchone()
+        conn.close()
+        
+        if admin:
+            print("Admin found:", admin)
+            session['admin_id'] = admin[0]
+            return redirect(url_for('admin_dashboard'))
+        else:
+            print("No admin found with these credentials.")
+    return render_template('admin_login.html')
+
+# User Dashboard: Display available vehicles
+@app.route('/user_dashboard')
+def user_dashboard():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    conn   = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM vehicles WHERE available=1")
+    vehicles = cursor.fetchall()
+    conn.close()
+    return render_template('user_dashboard.html', vehicles=vehicles)
+
+# Book a Vehicle
+@app.route('/book/<int:vehicle_id>')
+def book_vehicle(vehicle_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+    conn    = get_db_connection()
+    cursor  = conn.cursor()
+    cursor.execute("INSERT INTO bookings (user_id, vehicle_id) VALUES (%s, %s)", (user_id, vehicle_id))
+    cursor.execute("UPDATE vehicles SET available=0 WHERE id=%s", (vehicle_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('booking_history'))
+
+# User Booking History
+@app.route('/booking_history')
+def booking_history():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+    conn    = get_db_connection()
+    cursor  = conn.cursor()
+    cursor.execute("""
+        SELECT bookings.id, vehicles.model, vehicles.brand, vehicles.price, bookings.status 
+        FROM bookings 
+        JOIN vehicles ON bookings.vehicle_id = vehicles.id 
+        WHERE bookings.user_id=%s
+    """, (user_id,))
+    bookings = cursor.fetchall()
+    conn.close()
+    return render_template('booking_history.html', bookings=bookings)
+
+# Cancel Booking
+@app.route('/cancel_booking/<int:booking_id>')
+def cancel_booking(booking_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    conn    = get_db_connection()
+    cursor  = conn.cursor()
+    # Get vehicle id associated with the booking
+    cursor.execute("SELECT vehicle_id FROM bookings WHERE id=%s", (booking_id,))
+    vehicle = cursor.fetchone()
+    if vehicle:
+        vehicle_id = vehicle[0]
+        cursor.execute("DELETE FROM bookings WHERE id=%s", (booking_id,))
+        cursor.execute("UPDATE vehicles SET available=1 WHERE id=%s", (vehicle_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('booking_history'))
+
+# Admin Dashboard: Manage vehicles and view bookings
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    if 'admin_id' not in session:
+        return redirect(url_for('admin_login'))
+    conn    = get_db_connection()
+    cursor  = conn.cursor()
+    # Get all vehicles
+    cursor.execute("SELECT * FROM vehicles")
+    vehicles = cursor.fetchall()
+    # Get all bookings along with user name and vehicle model
+    cursor.execute("""
+        SELECT bookings.id, users.name, vehicles.model, bookings.status 
+        FROM bookings 
+        JOIN users ON bookings.user_id = users.id 
+        JOIN vehicles ON bookings.vehicle_id = vehicles.id
+    """)
+    bookings = cursor.fetchall()
+    conn.close()
+    return render_template('admin_dashboard.html', vehicles=vehicles, bookings=bookings)
+
+# Admin: Add Vehicle
+@app.route('/add_vehicle', methods=['POST'])
+def add_vehicle():
+    if 'admin_id' not in session:
+        return redirect(url_for('admin_login'))
+    model = request.form['model']
+    brand = request.form['brand']
+    price = request.form['price']
+    conn  = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO vehicles (model, brand, price, available) VALUES (%s, %s, %s, 1)",
+                   (model, brand, price))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+# Admin: Delete Vehicle
+@app.route('/delete_vehicle/<int:vehicle_id>')
+def delete_vehicle(vehicle_id):
+    if 'admin_id' not in session:
+        return redirect(url_for('admin_login'))
+    conn   = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM vehicles WHERE id=%s", (vehicle_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+# Logout for both users and admins
+@app.route('/logout')
 def logout():
     session.clear()
-    return jsonify({"message": "Logged out successfully"}), 200
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)

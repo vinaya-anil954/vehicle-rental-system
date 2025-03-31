@@ -1,16 +1,36 @@
 {% extends "base.html" %}
+
 {% block title %}Available Vehicles{% endblock %}
+
 {% block content %}
+  <div class="card">
     <h2>Available Vehicles</h2>
-    <ul>
-        {% for vehicle in vehicles %}
-            <li>
-                {{ vehicle[1] }} ({{ vehicle[2] }}) - ${{ vehicle[3] }} 
-                <a href="{{ url_for('book_vehicle', vehicle_id=vehicle[0]) }}">Book</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <br>
-    <a href="{{ url_for('booking_history') }}">My Bookings</a> |
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <div class="vehicle-grid">
+      {% for vehicle in vehicles %}
+        <div class="vehicle-card">
+          <div class="vehicle-img"></div>
+          <div class="vehicle-info">
+            <h3>{{ vehicle[1] }} {{ vehicle[2] }}</h3>
+            <div class="price">${{ vehicle[3] }}/day</div>
+            <p>Model: {{ vehicle[1] }}</p>
+            <p>Brand: {{ vehicle[2] }}</p>
+            <a href="{{ url_for('book_vehicle', vehicle_id=vehicle[0]) }}" class="btn btn-success">
+              <i class="fas fa-calendar-check"></i> Book Now
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="actions">
+      <a href="{{ url_for('booking_history') }}" class="btn">
+        <i class="fas fa-history"></i> My Bookings
+      </a>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </div>
 {% endblock %}

@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Admin Login{% endblock %}
 {% block content %}
-    <h2>Admin Login</h2>
+    <div class="admin">
+        <h2>Admin Login</h2>
     <form method="POST">
         <input type="email" name="email" placeholder="Admin Email" required>
         <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+        <div class="submit">
+            <button type="submit">Login</button>
+        </div>
     </form>
+    </div>
 {% endblock %}

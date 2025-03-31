@@ -3,6 +3,7 @@
 {% block title %}Available Vehicles{% endblock %}
 
 {% block content %}
+<br>
   <div class="card">
     <h2>Available Vehicles</h2>
     <div class="vehicle-grid">
@@ -22,7 +23,7 @@
       {% endfor %}
     </div>
   </div>
-
+<br>
   <div class="card">
     <div class="actions">
       <a href="{{ url_for('booking_history') }}" class="btn">

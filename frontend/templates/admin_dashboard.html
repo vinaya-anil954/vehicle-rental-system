@@ -1,35 +1,79 @@
 {% extends "base.html" %}
+
 {% block title %}Admin Dashboard{% endblock %}
+
 {% block content %}
-    <h2>Admin Dashboard</h2>
+<style>
+    .vehicle-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
     
-    <h3>Add Vehicle</h3>
-    <form method="POST" action="{{ url_for('add_vehicle') }}">
-        <input type="text" name="model" placeholder="Model" required>
-        <input type="text" name="brand" placeholder="Brand" required>
-        <input type="number" name="price" placeholder="Price" required>
-        <button type="submit">Add Vehicle</button>
-    </form>
+    .vehicle-table th, .vehicle-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .vehicle-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+    
+    .status-available {
+        color: #2ecc71;
+    }
+    
+    .status-unavailable {
+        color: #e74c3c;
+    }
+    
+    .btn-action {
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+    
+    .btn-delete {
+        background: #e74c3c;
+        color: white;
+    }
+</style>
 
-    <h3>All Vehicles</h3>
-    <ul>
+<h2>Vehicle Management</h2>
+
+<table class="vehicle-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
         {% for vehicle in vehicles %}
-            <li>
-                {{ vehicle[1] }} ({{ vehicle[2] }}) - ${{ vehicle[3] }} 
-                <a href="{{ url_for('delete_vehicle', vehicle_id=vehicle[0]) }}">Delete</a>
-            </li>
+        <tr>
+            <td>{{ vehicle[0] }}</td>
+            <td>{{ vehicle[2] }}</td>
+            <td>{{ vehicle[1] }}</td>
+            <td>${{ "%.2f"|format(vehicle[3]) }}</td>
+            <td class="status-{% if vehicle[4] %}available{% else %}unavailable{% endif %}">
+                {% if vehicle[4] %}Available{% else %}Unavailable{% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('delete_vehicle', vehicle_id=vehicle[0]) }}" 
+                   class="btn-action btn-delete">
+                    Delete
+                </a>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+    </tbody>
+</table>
 
-    <h3>All Bookings</h3>
-    <ul>
-        {% for booking in bookings %}
-            <li>
-                Booking ID: {{ booking[0] }} | User: {{ booking[1] }} | Vehicle: {{ booking[2] }} | Status: {{ booking[3] }}
-            </li>
-        {% endfor %}
-    </ul>
-
-    <br>
-    <a href="{{ url_for('logout') }}">Logout</a>
+<!-- Add vehicle form would go here -->
 {% endblock %}

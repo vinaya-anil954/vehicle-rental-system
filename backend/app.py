@@ -142,25 +142,14 @@ def cancel_booking(booking_id):
 
 # Admin Dashboard: Manage vehicles and view bookings
 @app.route('/admin_dashboard')
+@admin_required
 def admin_dashboard():
-    if 'admin_id' not in session:
-        return redirect(url_for('admin_login'))
-    conn    = get_db_connection()
-    cursor  = conn.cursor()
-    # Get all vehicles
-    cursor.execute("SELECT * FROM vehicles")
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, model, brand, price, available FROM vehicles")
     vehicles = cursor.fetchall()
-    # Get all bookings along with user name and vehicle model
-    cursor.execute("""
-        SELECT bookings.id, users.name, vehicles.model, bookings.status 
-        FROM bookings 
-        JOIN users ON bookings.user_id = users.id 
-        JOIN vehicles ON bookings.vehicle_id = vehicles.id
-    """)
-    bookings = cursor.fetchall()
     conn.close()
-    return render_template('admin_dashboard.html', vehicles=vehicles, bookings=bookings)
-
+    return render_template('admin_dashboard.html', vehicles=vehicles)
 # Admin: Add Vehicle
 @app.route('/add_vehicle', methods=['POST'])
 def add_vehicle():
@@ -194,6 +183,17 @@ def delete_vehicle(vehicle_id):
 def logout():
     session.clear()
     return redirect(url_for('home'))
+# In your vehicle query routes
+@app.route('/user_dashboard')
+@login_required
+def user_dashboard():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, model, brand, price FROM vehicles WHERE available=1")
+    vehicles = cursor.fetchall()
+    conn.close()
+    return render_template('user_dashboard.html', vehicles=vehicles)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

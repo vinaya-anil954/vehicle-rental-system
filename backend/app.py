@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, url_for
 from db_config import get_db_connection
 import hashlib
 import os
+from flask import flash  # Add this import at the top
 
 # Configure Flask to use templates and static files from the frontend folder
 app = Flask(
@@ -40,20 +41,27 @@ def signup():
         return redirect(url_for('login'))
     return render_template('signup.html')
 
+
+        
+
+# ... (existing code remains the same until login routes)
+
 # User Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email    = request.form['email']
+        email = request.form['email']
         password = hash_password(request.form['password'])
-        conn     = get_db_connection()
-        cursor   = conn.cursor()
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute("SELECT id FROM users WHERE email=%s AND password=%s", (email, password))
         user = cursor.fetchone()
         conn.close()
         if user:
             session['user_id'] = user[0]
             return redirect(url_for('user_dashboard'))
+        else:
+            flash('Invalid email or password', 'error')
     return render_template('login.html')
 
 # Admin Login
@@ -61,9 +69,7 @@ def login():
 def admin_login():
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password']  # using plain text for admin login
-        print("Admin login attempt:", email, password)  # Debug statement
-
+        password = request.form['password']
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT id FROM admins WHERE email=%s AND password=%s", (email, password))
@@ -71,12 +77,12 @@ def admin_login():
         conn.close()
         
         if admin:
-            print("Admin found:", admin)
             session['admin_id'] = admin[0]
             return redirect(url_for('admin_dashboard'))
         else:
-            print("No admin found with these credentials.")
+            flash('Invalid admin credentials', 'error')
     return render_template('admin_login.html')
+          
 
 # User Dashboard: Display available vehicles
 @app.route('/user_dashboard')
@@ -197,4 +203,3 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
- 

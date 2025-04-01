@@ -41,4 +41,4 @@ USE vehicle_rental;
 
 INSERT INTO vehicles (model, brand, price, available) VALUES ('Civic', 'Honda', 150.00, 1);
 INSERT INTO vehicles (model, brand, price, available) VALUES ('Corolla', 'Toyota', 180.00, 1);
-INSERT INTO vehicles (model, brand, price, available) VALUES ('F-150', 'Ford', 200.00, 1);
+INSERT INTO vehicles (model, brand, price, available) VALUES ('F-150', 'Ford', 200.00, 1)

@@ -1,25 +1,23 @@
 /* Base Styles */
 :root {
-  --primary-color: #0627bb;
+  --primary-color: #4361ee;
   --secondary-color: #3f37c9;
   --success-color: #4cc9f0;
   --danger-color: #f72585;
   --light-color: #f8f9fa;
   --dark-color: #212529;
   --border-radius: 8px;
-  --box-shadow: 0 4px 6px rgba(0, 0, 1.4, 0.4);
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
 }
 
 body {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #719de0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
   color: var(--dark-color);
   line-height: 1.6;
   margin: 0;
   padding: 0;
-  padding-bottom: 80px;
-
 }
 
 /* Layout */
@@ -28,103 +26,20 @@ body {
   margin: 0 auto;
   padding: 0 20px;
 }
-.option{
-  background-color: transparent;
-  margin: 10px;
-  padding: 1rem 2rem;
-  border-radius: 5px;
-  text-decoration: none;
-  color: transparent;
-  font-size: 1.2rem;
-  
-  /* box-shadow: var(--box-shadow); */
-  transition: background 0.3s ease;
-}
-
-.option :hover{
-  background-color: rgba(255, 255, 255, 0.2);
-  text-decoration: none;
-}
-
-.option a{
-  font-weight: bold;  /* Make text bold */
-    color: white;       /* Set text color to white */
-    text-decoration: none; /* Remove underline */
-    padding: 10px 20px;  /* Add padding for better spacing */
-    background-color: transparent; /* Keep background clear */
-    border-radius: var(--border-radius);
-    transition: color 0.3s ease, background 0.3s ease; /* Smooth transition */
-}
-.home {
-  height: 80vh;
-    background: url(https://source.unsplash.com/1600x900/?car,road) center / cover;
-    display: flex;
-    font-size: 30px;
-    text-align: center;
-    
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: rgb(255, 255, 255);
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.option a:hover {
-  background-color: #0056b3; /* Same hover effect as navbar */
-  color: white; /* Keep text white */
-  border-radius: 5px; /* Optional: rounded edges */
-  padding: 10px 20px; /* Ensure consistent padding */
-} 
-
-.optionlist {
-  display: flex;
-  gap: 0;
-}
-.home p{
-  margin: 0;
-  padding-bottom: 80px;
-}
-.home h1{
-    display: block;
-    font-size: 2em;
-    margin: 0;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
-    unicode-bidi: isolate;
-    margin-bottom: 0;
-    
-    /* font-family: fantasy; */
-
-}
 
 /* Navigation */
 nav {
-  background-color: #06025a;
+  background-color: var(--primary-color);
   padding: 1rem 0;
   box-shadow: var(--box-shadow);
-  opacity: 21px;
-  /* background: rgba(0, 0, 0, 0.5);  */
 }
 
-.ul {
-  list-style: none;
+nav ul {
   display: flex;
   justify-content: center;
   gap: 2rem;
   margin: 0;
-  padding:10px;
-  gap: 100px;
-}
-
-.ul li a {
-  text-decoration: none;  /* Removes the underline */
-  color: white;  /* Set color as needed */
-  font-weight: bold;
-  font-size: 1rem;  /* Makes text bigger */
-    padding: 15px 25px; /* Adds space around text */
+  padding: 0;
 }
 
 nav a {
@@ -140,36 +55,16 @@ nav a:hover {
   text-decoration: none;
 }
 
-.login h2,.signup h2,.admin h2 {
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  color: #ffffff;
-  background-color: transparent;
-  transition: all 0.3s ease-in-out;
-  /* font-family:  Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
-}
-
-
-.login h2 :hover{
-  color: #ff4b2b;
-  transform: scale(1.1);
-}
-
 /* Cards */
 .card {
   background: white;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  padding: 2rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
   transition: var(--transition);
-  
 }
-.card h2{
-  /* font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  font-size: 40px;
-}
+
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -179,21 +74,17 @@ nav a:hover {
 .form-container {
   max-width: 500px;
   margin: 2rem auto;
-  background-color: #212529;
-  
 }
 
 form {
-  
-  background: rgba(255,255,255,0.3);
+  background: white;
   padding: 2rem;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  /* margin: 20px; */
 }
 
 .form-group {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
 }
 
 label {
@@ -201,17 +92,14 @@ label {
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
-.alternate{
-  color: rgb(172, 18, 18);
-}
+
 input, select, textarea {
-  width: 95%;
+  width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: var(--border-radius);
   font-size: 1rem;
   transition: var(--transition);
-  margin: 10px;
 }
 
 input:focus {
@@ -219,75 +107,44 @@ input:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
 }
-.submit{
-  
-  
-  display: flex;
-  justify-content: center;
-}
-
-footer{
-  position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #090220;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-}
 
 /* Buttons */
-button {
-  display: flex;
+.btn {
+  display: inline-block;
   padding: 0.75rem 1.5rem;
   background-color: var(--primary-color);
-  color: rgb(250, 248, 248);
+  color: white;
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
   font-size: 1rem;
   font-weight: 500;
   text-align: center;
-  justify-content: center;
+  transition: var(--transition);
 }
-.actions{
-  justify-content: center;
-  display: flex;
-  gap: 30px;
-  
-}
-.submit :hover{
+
+.btn:hover {
   background-color: var(--secondary-color);
-  /* transform: translate(-2px); */
-  
+  transform: translateY(-2px);
 }
-.btn{
-  text-decoration: none;
-  
-}
-.actions a{
-  font-weight: 100;
-}
+
 .btn-danger {
-  /* background-color: var(--danger-color); */
-  text-decoration: none;
+  background-color: var(--danger-color);
 }
 
-
+.btn-danger:hover {
+  background-color: #d1145a;
+}
 
 .btn-success {
-  background-color: transparent;
+  background-color: var(--success-color);
 }
 
 /* Vehicle List */
-.card{
-  margin: 0 auto;
-}
 .vehicle-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 3rem;
+  gap: 2rem;
   margin: 2rem 0;
 }
 

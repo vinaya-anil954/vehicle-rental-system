@@ -1,6 +1,6 @@
 /* Base Styles */
 :root {
-  --primary-color: #4361ee;
+  --primary-color: #0627bb;
   --secondary-color: #3f37c9;
   --success-color: #4cc9f0;
   --danger-color: #f72585;
@@ -12,7 +12,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   background-color: #719de0;
   color: var(--dark-color);
   line-height: 1.6;
@@ -61,11 +61,11 @@ body {
     display: flex;
     font-size: 30px;
     text-align: center;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: rgb(12, 27, 95);
+    color: rgb(255, 255, 255);
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -80,26 +80,33 @@ body {
   display: flex;
   gap: 0;
 }
-
+.home p{
+  margin: 0;
+  padding-bottom: 80px;
+}
 .home h1{
     display: block;
     font-size: 2em;
+    margin: 0;
     margin-block-start: 0.67em;
     margin-block-end: 0.67em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
     unicode-bidi: isolate;
+    margin-bottom: 0;
+    
+    /* font-family: fantasy; */
 
 }
 
 /* Navigation */
 nav {
-  background-color: transparent;
+  background-color: #06025a;
   padding: 1rem 0;
   box-shadow: var(--box-shadow);
   opacity: 21px;
-  background: rgba(0, 0, 0, 0.5); 
+  /* background: rgba(0, 0, 0, 0.5);  */
 }
 
 .ul {
@@ -136,9 +143,10 @@ nav a:hover {
 .login h2,.signup h2,.admin h2 {
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
   text-align: center;
+  color: #ffffff;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  /* font-family:  Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
 }
 
 
@@ -156,7 +164,12 @@ nav a:hover {
   transition: var(--transition);
   
 }
-
+.card h2{
+  /* font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  font-size: 40px;
+}
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -218,7 +231,7 @@ footer{
     bottom: 0;
     left: 0;
     width: 100%;
-    background: #100147;
+    background: #090220;
     color: white;
     text-align: center;
     padding: 10px 0;

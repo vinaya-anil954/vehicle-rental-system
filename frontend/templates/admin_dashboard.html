@@ -1,35 +1,66 @@
 {% extends "base.html" %}
 {% block title %}Admin Dashboard{% endblock %}
 {% block content %}
-    <h2>Admin Dashboard</h2>
+ <div class="admin">
+    <h2 class="adminh2">Admin Dashboard</h2>
     
-    <h3>Add Vehicle</h3>
-    <form method="POST" action="{{ url_for('add_vehicle') }}">
+    <h3 class="adminh3">Add Vehicle</h3>
+    <form method="POST" action="{{ url_for('add_vehicle') }}" class="adminform">
         <input type="text" name="model" placeholder="Model" required>
         <input type="text" name="brand" placeholder="Brand" required>
         <input type="number" name="price" placeholder="Price" required>
-        <button type="submit">Add Vehicle</button>
+        <button type="submit" class="adminbutton">Add</button>
     </form>
 
-    <h3>All Vehicles</h3>
-    <ul>
-        {% for vehicle in vehicles %}
-            <li>
-                {{ vehicle[1] }} ({{ vehicle[2] }}) - ${{ vehicle[3] }} 
-                <a href="{{ url_for('delete_vehicle', vehicle_id=vehicle[0]) }}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <h3>All Bookings</h3>
-    <ul>
-        {% for booking in bookings %}
-            <li>
-                Booking ID: {{ booking[0] }} | User: {{ booking[1] }} | Vehicle: {{ booking[2] }} | Status: {{ booking[3] }}
-            </li>
-        {% endfor %}
-    </ul>
+    <h3 class="vehiclelisth3">All Vehicles</h3>
+    <table class="vehicle-table">
+        <thead>
+            <tr>
+                <th>Vehicle Name</th>
+                <th>Model</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in vehicles %}
+                <tr>
+                    <td>{{ vehicle[1] }}</td>  <!-- Vehicle Name -->
+                    <td>{{ vehicle[2] }}</td>  <!-- Model -->
+                    <td>${{ vehicle[3] }}</td> <!-- Price -->
+                    <td>
+                        <a class="deletebutton" href="{{ url_for('delete_vehicle', vehicle_id=vehicle[0]) }}">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <h3 class="vehiclelisth3">All Bookings</h3>
+    <table class="vehicle-table">
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>User</th>
+                <th>Vehicle</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking[0] }}</td> <!-- Booking ID -->
+                    <td>{{ booking[1] }}</td> <!-- User -->
+                    <td>{{ booking[2] }}</td> <!-- Vehicle -->
+                    <td>{{ booking[3] }}</td> <!-- Status -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <br>
-    <a href="{{ url_for('logout') }}">Logout</a>
-{% endblock %}
+    <!-- <a class="adminlogout" href="{{ url_for('logout') }}">Logout</a> -->
+ </div>
+{% endblock %} 

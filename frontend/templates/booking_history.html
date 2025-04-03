@@ -1,54 +1,23 @@
+
 {% extends "base.html" %}
 {% block title %}My Bookings{% endblock %}
 {% block content %}
-    <div class="card">
-        <h2>My Bookings</h2>
-        
-        {% if not bookings %}
-            <p>You haven't made any bookings yet.</p>
-        {% else %}
-            <div class="bookings-list">
-                {% for booking in bookings %}
-                    <div class="booking-card">
-                        <div class="booking-info">
-                            <div class="vehicle-model">{{ booking[1] }} {{ booking[2] }}</div>
-                            <div class="booking-details">
-                                <span class="price">${{ booking[3] }}/day</span>
-                                <span class="status {{ 'status-booked' if booking[3] == 'Booked' else 'status-cancelled' }}">
-                                    {{ booking[3] }}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="booking-actions">
-                            {% if booking[3] == 'Booked' %}
-                                <a href="{{ url_for('cancel_booking', booking_id=booking[0]) }}" 
-                                   class="btn btn-danger btn-small"
-                                   onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                    <i class="fas fa-times"></i> Cancel
-                                </a>
-                            {% endif %}
-                            
-                            {% if booking[3] == 'Booked' and not booking[5] %}
-                                <a href="{{ url_for('submit_review', booking_id=booking[0]) }}" 
-                                   class="btn btn-success btn-small">
-                                    <i class="fas fa-star"></i> Review
-                                </a>
-                            {% elif booking[5] %}
-                                <span class="reviewed-badge">
-                                    <i class="fas fa-check-circle"></i> Reviewed
-                                </span>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        
-        <div class="actions">
-            <a href="{{ url_for('user_dashboard') }}" class="btn">
-                <i class="fas fa-arrow-left"></i> Back to Vehicles
-            </a>
-        </div>
-    </div>
+<div class="booking_login">
+    <h2>My Bookings</h2>
+    <ul class="bookingcontainer">
+        {% for booking in bookings %}
+        <li>
+            {{ booking[1] }} - ${{ booking[2] }} - Status: {{ booking[3] }}
+            <a href="{{ url_for('cancel_booking', booking_id=booking[0]) }}">Cancel</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <br>
+</div>
+
+<div class="optionb">
+    <a href="{{ url_for('user_dashboard') }}">Back</a> 
+    <a href="{{ url_for('logout') }}">Logout</a>
+</div>
+
 {% endblock %}

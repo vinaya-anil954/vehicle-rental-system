@@ -1,19 +1,16 @@
+
 {% extends "base.html" %}
 {% block title %}Admin Login{% endblock %}
 {% block content %}
-    <h2>Admin Login</h2>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+<div class="login">
+    <h2 class="signuph2">Admin Login</h2>
     <form method="POST">
         <input type="email" name="email" placeholder="Admin Email" required>
+        <br><br>
         <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+        <br><br>
+        <button type="submit" class="loginbutton">Login</button>
     </form>
+</div>
+    
 {% endblock %}

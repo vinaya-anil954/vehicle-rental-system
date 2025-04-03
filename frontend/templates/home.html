@@ -1,9 +1,33 @@
+
 {% extends "base.html" %}
 {% block title %}Welcome{% endblock %}
 {% block content %}
-    <h1>Welcome to the Vehicle Rental System</h1>
+
+
+
+<div class='home'>
+    <h1>Welcome to the <br>Vehicle Rental System</h1>
+    <p class="p1">Choose from a variety of vehicles for your journey.</p>
+    <br>
+   <div class="optionlist">
+    <div class="option">
+        <a href="{{ url_for('login') }}">User Login</a>
+    </div>
+    <div class="option"> 
+        <a href="{{ url_for('signup') }}">Signup</a>
+    </div>
+    <div class="option">
+        <a href="{{ url_for('admin_login') }}">Admin Login</a>
+    </div>
+   </div>
+</div>
+
+
+
+    <!-- <h1>Welcome to the Vehicle Rental System</h1>
     <p>Please choose an option:</p>
     <a href="{{ url_for('login') }}">User Login</a> |
     <a href="{{ url_for('signup') }}">Signup</a> |
-    <a href="{{ url_for('admin_login') }}">Admin Login</a>
+    <a href="{{ url_for('admin_login') }}">Admin Login</a> -->
+
 {% endblock %}

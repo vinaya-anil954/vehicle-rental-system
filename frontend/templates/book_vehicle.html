@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Book Vehicle{% endblock %}
+{% block content %}
+<div class="booking-form">
+    <h2>Book {{ vehicle[2] }} {{ vehicle[1] }}</h2>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label>Start Date:</label>
+            <input type="date" name="from_date" min="{{ min_date }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label>End Date:</label>
+            <input type="date" name="to_date" required>
+        </div>
+        <!-- Add this driver selection section -->
+<div class="form-group">
+    <h4>Driver Options</h4>
+    <div class="driver-option">
+        <input type="radio" id="driver_yes" name="needs_driver" value="true">
+        <label for="driver_yes">yes(+$20/day)</label>
+    </div>
+    <div class="driver-option">
+        <input type="radio" id="driver_no" name="needs_driver" value="false" checked>
+        <label for="driver_no">No</label>
+    </div>
+</div>
+        
+        <button type="submit" class="btn-submit">Confirm Booking</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fromDate = document.querySelector('input[name="from_date"]');
+    const toDate = document.querySelector('input[name="to_date"]');
+    
+    fromDate.addEventListener('change', function() {
+        toDate.min = this.value;
+    });
+});
+</script>
+
+<style>
+.booking-form {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-submit {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+</style>
+{% endblock %}

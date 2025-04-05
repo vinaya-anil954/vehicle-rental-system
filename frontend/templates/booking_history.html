@@ -1,23 +1,69 @@
-
 {% extends "base.html" %}
-{% block title %}My Bookings{% endblock %}
+
 {% block content %}
-<div class="booking_login">
-    <h2>My Bookings</h2>
-    <ul class="bookingcontainer">
-        {% for booking in bookings %}
-        <li>
-            {{ booking[1] }} - ${{ booking[2] }} - Status: {{ booking[3] }}
-            <a href="{{ url_for('cancel_booking', booking_id=booking[0]) }}">Cancel</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <br>
+<div class="container">
+    <h2 class="my-4">Your Booking History</h2>
+    
+    {% if bookings %}
+        <div class="row">
+            {% for booking in bookings %}
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ booking.model }} ({{ booking.brand }})</h5>
+                        <div class="card-text">
+                            <p><strong>Price:</strong> ${{ "%.2f"|format(booking.price) }}/day</p>
+                            <p><strong>From:</strong> {{ booking.from_date }}</p>
+                            <p><strong>To:</strong> {{ booking.to_date }}</p>
+                            <p><strong>Duration:</strong> {{ booking.total_days }} day(s)</p>
+                            
+                            <!-- NEW: Driver Information Section -->
+                            {% if booking.needs_driver %}
+                                <p><strong>Driver Option:</strong> 
+                                    {% if booking.driver_id %}
+                                        <span class="text-success">Assigned ({{ booking.driver_name }})</span>
+                                    {% else %}
+                                        <span class="text-warning">Pending Assignment</span>
+                                    {% endif %}
+                                </p>
+                                {% if booking.driver_id %}
+                                <div class="driver-details bg-light p-2 rounded mt-2">
+                                    <p class="mb-1"><strong>Driver Name:</strong> {{ booking.driver_name }}</p>
+                                    <p class="mb-1"><strong>Contact:</strong> {{ booking.driver_contact }}</p>
+                                    <p class="mb-1"><strong>License:</strong> {{ booking.driver_license }}</p>
+                                </div>
+                                {% endif %}
+                            {% else %}
+                                <p><strong>Driver Option:</strong> <span class="text-muted">Self-driven</span></p>
+                            {% endif %}
+                            <!-- END NEW SECTION -->
+                            
+                            <p><strong>Status:</strong> 
+                                <span class="badge 
+                                    {% if booking.status == 'Pending' %}bg-warning
+                                    {% elif booking.status == 'Confirmed' %}bg-success
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ booking.status }}
+                                </span>
+                            </p>
+                            
+                            {% if booking.status.lower() == 'pending' %}
+                                <a href="{{ url_for('cancel_booking', booking_id=booking.id) }}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Are you sure?')">
+                                    Cancel Booking
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            No bookings found. <a href="{{ url_for('user_dashboard') }}">Browse vehicles</a> to make a booking.
+        </div>
+    {% endif %}
 </div>
-
-<div class="optionb">
-    <a href="{{ url_for('user_dashboard') }}">Back</a> 
-    <a href="{{ url_for('logout') }}">Logout</a>
-</div>
-
 {% endblock %}

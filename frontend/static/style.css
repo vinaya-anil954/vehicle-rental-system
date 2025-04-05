@@ -594,3 +594,316 @@ tbody{
     grid-template-columns: 1fr;
   }
 } 
+/* Booking History Specific Styles */
+.booking-history {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: white;
+}
+
+.booking-card {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+}
+
+.booking-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.booking-card h3 {
+  color: #beb319; /* Gold color for vehicle names */
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.date-label {
+  color: #4cc9f0; /* Light blue for date labels */
+  font-weight: 600;
+}
+
+.booking-card p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.status-pending {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.status-confirmed {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+}
+
+.status-cancelled {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+.btn-cancel {
+  background-color: transparent;
+  border: 1px solid #f72585;
+  color: #f72585;
+  margin-top: 1rem;
+}
+
+.btn-cancel:hover {
+  background-color: #f72585;
+  color: white;
+}
+
+.no-bookings {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius);
+}
+/* Search Container */
+.search-container {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--box-shadow);
+}
+
+.search-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.search-header h3 {
+  color: #beb319;
+  margin-bottom: 0.5rem;
+}
+
+.search-header p {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* Search Form */
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.search-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-group i {
+  position: absolute;
+  left: 15px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 20px 12px 45px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50px;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Filter Group */
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.price-filter {
+  flex: 1;
+  min-width: 250px;
+}
+
+.price-filter label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price-inputs input {
+  flex: 1;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 5px;
+}
+
+.price-separator {
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0 5px;
+}
+
+.filter-button, .reset-button {
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+}
+
+.filter-button:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.reset-button {
+  background: transparent;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+
+.reset-button:hover {
+  background: rgba(247, 37, 133, 0.1);
+}
+
+/* Vehicle List Header */
+.vehicle-list-header {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.vehicle-list-header h2 {
+  color: white;
+  margin: 0;
+}
+
+.result-count {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius);
+}
+
+.no-results i {
+  font-size: 3rem;
+  color: var(--danger-color);
+  margin-bottom: 1rem;
+}
+
+.no-results h3 {
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.no-results a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.no-results a:hover {
+  text-decoration: underline;
+}
+/* Status badges */
+.status-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.status-pending { background-color: #ffc107; color: #000; }
+.status-confirmed { background-color: #17a2b8; color: #fff; }
+.status-completed { background-color: #28a745; color: #fff; }
+.status-failed { background-color: #dc3545; color: #fff; }
+    .status-badge {
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        display: inline-block;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .status-pending { background-color: #FFC107; color: #000; }
+    .status-confirmed { background-color: #17A2B8; color: #FFF; }
+    .status-completed { background-color: #28A745; color: #FFF; }
+    .status-failed { background-color: #DC3545; color: #FFF; }
+
+    /* Status dropdown */
+    .status-select {
+        padding: 5px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        margin-right: 5px;
+    }
+    
+    /* Update button */
+    .status-update-btn {
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .status-update-btn:hover {
+        background-color: #45a049;
+    }
+    
+    /* Form alignment */
+    td form {
+        display: flex;
+        align-items: center;
+    }

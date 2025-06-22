@@ -54,9 +54,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Simulate vehicle images (can be replaced with real images from backend)
   const vehicleCards = document.querySelectorAll(".vehicle-card");
+  const imageUrls = [
+    "url('/static/CarImages/1.jpeg')",
+    "url('/static/CarImages/2.jpeg')",
+    "url('/static/CarImages/3.jpeg')",
+    "url('/static/CarImages/4.jpeg')",
+    "url('/static/CarImages/5.jpeg')",
+    "url('/static/CarImages/6.jpeg')",
+    "url('/static/CarImages/7.jpeg')",
+    "url('/static/CarImages/8.jpeg')",
+    "url('/static/CarImages/9.jpeg')",
+    "url('/static/CarImages/10.jpeg')",
+    "url('/static/CarImages/11.jpeg')",
+    "url('/static/CarImages/12.jpeg')",
+    "url('/static/CarImages/13.jpeg')",
+    "url('/static/CarImages/14.jpeg')",
+    "url('/static/CarImages/15.jpeg')",
+    "url('/static/CarImages/16.jpeg')"
+  ];
+  
   vehicleCards.forEach((card, index) => {
     const imgPlaceholder = card.querySelector(".vehicle-img");
-    const colors = ["#FF69B4", "#FF6EB4", "#FF66A3", "#FF5C8A", "#FF1493"];
-    imgPlaceholder.style.backgroundColor = colors[index % colors.length];
+    imgPlaceholder.style.backgroundImage = imageUrls[index % imageUrls.length];
+    imgPlaceholder.style.backgroundSize = "cover";
+    imgPlaceholder.style.backgroundPosition = "center";
   });
-}); 
+  
+});

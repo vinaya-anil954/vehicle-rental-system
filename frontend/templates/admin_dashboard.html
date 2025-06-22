@@ -5,10 +5,11 @@
     <h2 class="adminh2">Admin Dashboard</h2>
     
     <h3 class="adminh3">Add Vehicle</h3>
-    <form method="POST" action="{{ url_for('add_vehicle') }}" class="adminform">
+    <form method="POST" action="{{ url_for('add_vehicle') }}" class="adminform" enctype="multipart/form-data">
         <input type="text" name="model" placeholder="Model" required>
         <input type="text" name="brand" placeholder="Brand" required>
         <input type="number" name="price" placeholder="Price" required>
+        <input type="file" name="image" accept="image/*" placeholder="Vehicle Image">
         <button type="submit" class="adminbutton">Add</button>
     </form>
 
@@ -19,6 +20,7 @@
                 <th>Vehicle Name</th>
                 <th>Model</th>
                 <th>Price</th>
+                <th>Image</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -28,6 +30,13 @@
                     <td>{{ vehicle[1] }}</td>  <!-- Vehicle Name -->
                     <td>{{ vehicle[2] }}</td>  <!-- Model -->
                     <td>${{ vehicle[3] }}</td> <!-- Price -->
+                    <td>
+                        {% if vehicle[4] %}  <!-- Assuming index 4 is the image path -->
+                            <img src="{{ vehicle[4] }}" alt="{{ vehicle[1] }}" style="max-width: 100px;">
+                        {% else %}
+                            No image
+                        {% endif %}
+                    </td>
                     <td>
                         <a class="deletebutton" href="{{ url_for('delete_vehicle', vehicle_id=vehicle[0]) }}">
                             Delete
@@ -63,4 +72,4 @@
     <br>
     <!-- <a class="adminlogout" href="{{ url_for('logout') }}">Logout</a> -->
  </div>
-{% endblock %} 
+{% endblock %}
